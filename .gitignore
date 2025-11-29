@@ -1,1 +1,5 @@
 /data
+notebooks/dataset/ogbn_products/raw/edge.csv.gz
+notebooks/dataset/ogbn_products/raw/node-feat.csv.gz
+notebooks/dataset/ogbn_products/processed/data_processed
+notebooks/models/graphsage_embeddings.pth
