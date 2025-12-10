@@ -30,17 +30,7 @@ LinkedIn's LiGNN framework [LinkedIn, 2020] demonstrated that Graph Neural Netwo
 This project explores whether LiGNN-inspired techniques generalize to a fundamentally different graph structure: **product co-purchasing networks**. Specifically, we:
 
 1. **Apply existing methods** (GraphSAGE with multi-hop sampling) to a new dataset (OGB ogbn-products)
-2. **Conduct rigorous cold-start analysis** unavailable in the original LiGNN paper due to proprietary data
-3. **Establish reproducible benchmarks** for cold-start performance on public data
-4. **Compare** product graph characteristics to social network assumptions
-
-**Why This Matters**
-
-While LiGNN operates on LinkedIn's billion-member social graph, most researchers lack access to such data. By applying similar techniques to public benchmarks, we:
-- Enable reproducible cold-start research
-- Test method generalization across recommendation domains
-- Identify dataset-specific challenges (product co-purchasing vs. user interactions)
-- Provide baselines for future cold-start mitigation work
+2. **Establish reporroducible benchmarks** for cold-start performance on public data
 
 ### 1.2 Research Questions
 
@@ -64,47 +54,6 @@ This project investigates cold-start performance when applying LiGNN-inspired me
    - Feature informativeness
    - Category-specific cold-start patterns
 
-**Project Contribution**
-
-Our work does not claim novel methods but provides:
-- **First public cold-start benchmark** applying LiGNN-style techniques to OGB data
-- **Reproducible experiments** unavailable with LinkedIn's proprietary graphs  
-- **Domain transfer insights** comparing product vs. social network cold-start
-- **Baseline results** for future cold-start research on ogbn-products
-
-### 1.3 Objectives
-
-Our specific goals are:
-
-1. **Implement LiGNN-inspired baseline** on public data:
-   - GraphSAGE with multi-hop sampling ([10, 5] neighbors)
-   - Compare to MLP baseline (no graph structure)
-   - Adapt to product co-purchasing domain
-
-2. **Establish cold-start evaluation protocol**:
-   - Define degree-based cold-start thresholds (degree ≤ 2)
-   - Separate evaluation for cold-start vs. well-connected nodes
-   - Analyze 236K cold-start products in test set
-
-3. **Quantify domain transfer effectiveness**:
-   - Measure absolute performance on new dataset
-   - Identify cold-start performance gap
-   - Compare feature vs. structure contributions
-
-4. **Document reproducible experiments**:
-   - Public code repository with clear instructions
-   - Standard OGB splits and metrics
-   - Enable future research on cold-start mitigation
-
-5. **Analyze dataset-specific challenges**:
-   - Product graph properties vs. social network assumptions
-   - Category distribution of cold-start products  
-   - Embedding quality visualization
-
-**What This Is Not**
-
-This project does not develop new cold-start algorithms. Rather, it provides a **rigorous evaluation** of existing methods (GraphSAGE) on a new domain (product recommendations), with focus on cold-start scenarios that are underreported in original GNN papers.
-
 ---
 
 ## 2. Related Work
@@ -125,14 +74,14 @@ However, these methods often treat cold-start as a separate problem requiring di
 
 **Graph Convolutional Networks (GCN)** [Kipf & Welling, 2017] aggregate information from all neighbors but require full-batch processing, making them impractical for large graphs and providing no specific cold-start handling.
 
-**GraphSAGE** [Hamilton et al., 2017] introduced neighborhood sampling for scalability. By sampling fixed-size neighborhoods, GraphSAGE can theoretically handle cold-start nodes through:
+**GraphSAGE** introduced neighborhood sampling for scalability. By sampling fixed-size neighborhoods, GraphSAGE can theoretically handle cold-start nodes through:
 - **Multi-hop aggregation**: Even nodes with few direct connections can access 2-hop neighborhoods
 - **Feature integration**: Node features provide baseline signal independent of connectivity
 - **Inductive learning**: The model can generalize to unseen nodes at test time
 
 However, the actual effectiveness of these mechanisms for cold-start scenarios has not been thoroughly quantified on large-scale benchmarks.
 
-**Graph Attention Networks (GAT)** [Veličković et al., 2018] learn attention weights over neighbors, potentially helping cold-start nodes focus on their most informative connections. This is particularly relevant when few connections exist.
+**Graph Attention Networks (GAT)**  learn attention weights over neighbors, potentially helping cold-start nodes focus on their most informative connections. This is particularly relevant when few connections exist.
 
 ### 2.3 Cold-Start in Graph-Based Methods
 
