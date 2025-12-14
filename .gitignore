@@ -5,3 +5,6 @@ notebooks/dataset/ogbn_products/processed/data_processed
 notebooks/models/graphsage_embeddings.pth
 venv
 uv_project
+dataset/ogbn_products/processed/data_processed
+dataset/ogbn_products/raw/edge.csv.gz
+dataset/ogbn_products/raw/node-feat.csv.gz
