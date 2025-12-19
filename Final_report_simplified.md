@@ -222,6 +222,8 @@ While this study demonstrates GraphSAGE's capabilities and limitations on cold-s
 
 **Third, we did not implement domain-specific adaptations** beyond basic architectural choices. Techniques like feature engineering, hybrid models combining collaborative filtering with GNNs, or meta-learning approaches designed specifically for few-neighbor scenarios could improve cold-start performance. **Fourth, computational constraints limited hyperparameter exploration**—the ogbn-products scale made exhaustive tuning infeasible, and different learning rates, hidden dimensions, or dropout values might narrow the gap.
 
+**Note on alternative architectures**: We attempted to train Graph Attention Networks (GAT) and Graph Convolutional Networks (GCN) on the full dataset for comparison. However, both models were stopped after the first epoch exceeded 500 minutes of training time, making them computationally infeasible for this dataset scale. This highlights GraphSAGE's critical advantage: its sampling-based approach enables practical training on million-node graphs, while full-batch methods like GCN and attention-based approaches like GAT face prohibitive computational costs at this scale.
+
 **Future work should investigate**: (1) specialized cold-start architectures (attention mechanisms over sparse neighborhoods, content-based fallbacks), (2) transfer learning from related product domains, (3) temporal modeling (cold-start nodes gain connections over time), and (4) hybrid approaches integrating GNNs with traditional recommendation signals. Additionally, comparing multiple GNN variants (GAT, GIN, LiGNN itself) on the same cold-start benchmark would provide deeper insights into which architectural choices matter most for handling low-degree nodes.
 
 ---
