@@ -6,9 +6,9 @@
 
 ## Abstract
 
-The cold-start problem—predicting properties of nodes with minimal connectivity—is a critical challenge in graph-based recommendation systems. This project investigates whether Graph Neural Network techniques from LinkedIn's LiGNN framework, specifically GraphSAGE with multi-hop neighborhood sampling, can effectively handle cold-start scenarios when transferred to a different domain: product recommendation networks.
+The cold-start problem - predicting properties of nodes with minimal connectivity - is a critical challenge in graph-based recommendation systems. This project investigates whether Graph Neural Network techniques from LinkedIn's LiGNN framework, specifically GraphSAGE with multi-hop neighborhood sampling, can effectively handle cold-start scenarios when transferred to a different domain: product recommendation networks.
 
-We apply GraphSAGE to the OGB ogbn-products dataset, an Amazon co-purchasing graph with 2.45 million products and 61.9 million edges. We define cold-start nodes as products with degree ≤ 2, representing items with minimal purchase history (9.6% of all nodes). Our comprehensive evaluation reveals a significant performance gap: while GraphSAGE achieves 89.27% accuracy on well-connected products, performance drops to 74.64% for cold-start items—a 14.63 percentage point degradation.
+We apply GraphSAGE to the OGB ogbn-products dataset, an Amazon co-purchasing graph with 2.45 million products and 61.9 million edges. We define cold-start nodes as products with degree ≤ 2, representing items with minimal purchase history (9.6% of all nodes). Our comprehensive evaluation reveals a significant performance gap: while GraphSAGE achieves 89.27% accuracy on well-connected products, performance drops to 74.64% for cold-start items - a 14.63 percentage point degradation.
 
 This work provides the first reproducible cold-start benchmark on public graph data, quantifying how GNN methods designed for social networks transfer to e-commerce recommendation graphs. Our findings demonstrate that while multi-hop sampling provides partial compensation for limited connectivity (achieving 65-75% accuracy compared to 27% for feature-only baselines), the cold-start problem remains a substantial challenge requiring domain-specific solutions. The dataset contains 236,337 total cold-start nodes (degree ≤ 2), with 99.85% concentrated in the test set (235,990 nodes), representing realistic deployment scenarios where recommendations must be made for many low-interaction products.
 
@@ -30,7 +30,7 @@ LinkedIn's LiGNN framework demonstrated that GNNs can operate at billion-node sc
 
 Most academic GNN papers report aggregate performance metrics without detailed cold-start analysis. When cold-start is mentioned, it's typically as a limitation rather than a focus of empirical investigation. Furthermore, the few studies addressing cold-start often use small-scale datasets or synthetic scenarios that don't reflect real-world graph properties.
 
-This project bridges this gap by applying LiGNN-inspired techniques—specifically GraphSAGE with multi-hop sampling—to a fundamentally different graph structure: product co-purchasing networks. Our work asks: **Do GNN methods effective on social networks generalize to e-commerce graphs? How severe is the cold-start problem in this domain?**
+This project bridges this gap by applying LiGNN-inspired techniques - specifically GraphSAGE with multi-hop sampling - to a fundamentally different graph structure: product co-purchasing networks. Our work asks: **Do GNN methods effective on social networks generalize to e-commerce graphs? How severe is the cold-start problem in this domain?**
 
 **Our specific contributions are:**
 
@@ -49,7 +49,7 @@ We demonstrate that while GraphSAGE successfully scales to 2.45M nodes and lever
 
 **Graph Convolutional Networks (GCN)** [Kipf & Welling, 2017] pioneered semi-supervised learning on graphs through spectral convolutions, aggregating features from all neighbors. While effective on small graphs, GCNs require full-batch processing where the entire graph must fit in memory, making them impractical for real-world recommendation systems with millions of nodes.
 
-**GraphSAGE** [Hamilton et al., 2017] introduced sampling-based aggregation to enable scalability. Instead of using all neighbors, GraphSAGE samples a fixed number at each layer, enabling mini-batch training on graphs with billions of edges. The framework supports multiple aggregation functions (mean, max, LSTM-based) and has been successfully deployed in production systems. Its inductive learning capability allows generalization to unseen nodes at test time—critical for cold-start scenarios.
+**GraphSAGE** [Hamilton et al., 2017] introduced sampling-based aggregation to enable scalability. Instead of using all neighbors, GraphSAGE samples a fixed number at each layer, enabling mini-batch training on graphs with billions of edges. The framework supports multiple aggregation functions (mean, max, LSTM-based) and has been successfully deployed in production systems. Its inductive learning capability allows generalization to unseen nodes at test time - critical for cold-start scenarios.
 
 **Graph Attention Networks (GAT)** [Veličković et al., 2018] extended GNNs with attention mechanisms, learning to weight neighbor contributions dynamically. This is particularly relevant for cold-start: when few connections exist, attention could help the model focus on the most informative neighbors rather than treating all equally.
 
@@ -57,7 +57,7 @@ We demonstrate that while GraphSAGE successfully scales to 2.45M nodes and lever
 
 **PinSage** [Ying et al., 2018] demonstrated GNN-based recommendations at Pinterest's web-scale, processing billions of pins and boards. Key innovations included random walk-based sampling and importance pooling for aggregation, showing that GNNs can work in production environments.
 
-**LiGNN** [LinkedIn Engineering, 2020] extended these ideas to LinkedIn's member-job-company graph with over 1 billion nodes. Relevant to our work, LiGNN addressed cold-start through: (1) graph densification—adding edges between similar members based on profile features, (2) feature-rich initialization—using member attributes even when connections are sparse, and (3) temporal dynamics—updating embeddings as new interactions arrive. However, these techniques and their effectiveness remain proprietary.
+**LiGNN** [LinkedIn Engineering, 2020] extended these ideas to LinkedIn's member-job-company graph with over 1 billion nodes. Relevant to our work, LiGNN addressed cold-start through: (1) graph densification - adding edges between similar members based on profile features, (2) feature-rich initialization - using member attributes even when connections are sparse, and (3) temporal dynamics - updating embeddings as new interactions arrive. However, these techniques and their effectiveness remain proprietary.
 
 ### Cold-Start in Recommendation Systems
 
@@ -131,7 +131,7 @@ To establish a feature-only baseline, we implement a 2-layer MLP that processes 
 - Output layer: 47 dimensions (class logits)
 - Total parameters: ~33K
 
-**Training**: Cross-entropy loss, Adam optimizer (lr=0.003), batch size 1024, trained until convergence on validation set. This baseline tests whether product features alone—without leveraging co-purchase patterns—suffice for category prediction.
+**Training**: Cross-entropy loss, Adam optimizer (lr=0.003), batch size 1024, trained until convergence on validation set. This baseline tests whether product features alone - without leveraging co-purchase patterns - suffice for category prediction.
 
 ### 4.3 GraphSAGE Implementation
 
@@ -171,10 +171,10 @@ This approach enables training on graphs too large for GPU memory by never mater
 
 | Model | Validation (All) | Validation (Cold-Start) | Test (All) | Test (Cold-Start) | Cold-Start Gap |
 |-------|-----------------|------------------------|-----------|------------------|----------------|
-| MLP Baseline | 27.29% | — | — | — | — |
+| MLP Baseline | 27.29% | - | - | - | - |
 | **GraphSAGE** | **89.27%** | 74.64% | **74.92%** | 65.11% | **14.6%** |
 
-The MLP baseline achieves only 27.29% validation accuracy, barely above random guessing for 47 classes (2.1%). This demonstrates that node features alone—without graph structure—provide insufficient information for accurate category prediction in this domain.
+The MLP baseline achieves only 27.29% validation accuracy, barely above random guessing for 47 classes (2.1%). This demonstrates that node features alone - without graph structure - provide insufficient information for accurate category prediction in this domain.
 
 GraphSAGE dramatically outperforms the baseline with 89.27% validation accuracy, a 62 percentage point improvement. This confirms that co-purchase graph structure encodes crucial information about product similarities and categories. However, when we examine cold-start nodes specifically, performance degrades significantly: 74.64% on validation cold-start and 65.11% on test cold-start nodes.
 
@@ -182,7 +182,7 @@ The **cold-start performance gap** is substantial: 14.63 percentage points on va
 
 ### Analysis of Cold-Start Impact
 
-The test set cold-start population is particularly challenging: 235,990 nodes (10.7% of test set) have degree ≤ 2, making accurate predictions critical for real deployment. Despite the 14% gap, achieving 65-75% accuracy on these nodes is noteworthy—substantially better than the 27% feature-only baseline. This suggests that multi-hop neighborhood sampling provides partial compensation: even nodes with 0-2 direct neighbors can access information through second-hop connections.
+The test set cold-start population is particularly challenging: 235,990 nodes (10.7% of test set) have degree ≤ 2, making accurate predictions critical for real deployment. Despite the 14% gap, achieving 65-75% accuracy on these nodes is noteworthy - substantially better than the 27% feature-only baseline. This suggests that multi-hop neighborhood sampling provides partial compensation: even nodes with 0-2 direct neighbors can access information through second-hop connections.
 
 The validation-test gap (89% → 75% overall) indicates some overfitting to training graph structure, though this is expected given the static graph setting and relatively few training epochs. The cold-start gap is consistent across both splits, confirming this is a robust phenomenon rather than artifact of a particular split.
 
@@ -192,11 +192,11 @@ The validation-test gap (89% → 75% overall) indicates some overfitting to trai
 
 ### Why Does the Cold-Start Gap Exist?
 
-The 14% performance gap for cold-start nodes stems from fundamental information scarcity. Graph Neural Networks learn representations by aggregating features from neighborhoods—when neighborhoods are minimal (0-2 neighbors), aggregation becomes ineffective. 
+The 14% performance gap for cold-start nodes stems from fundamental information scarcity. Graph Neural Networks learn representations by aggregating features from neighborhoods - when neighborhoods are minimal (0-2 neighbors), aggregation becomes ineffective. 
 
-Consider the information flow: well-connected nodes sample 10 first-hop neighbors and 50 second-hop neighbors (10×5), accessing rich information about co-purchase patterns. Cold-start nodes with degree 1 sample that single neighbor plus 5 of its neighbors—far less diverse information. Nodes with degree 0 have no graph structure to leverage at all, relying entirely on their 100-dimensional features, essentially reducing to the MLP baseline.
+Consider the information flow: well-connected nodes sample 10 first-hop neighbors and 50 second-hop neighbors (10×5), accessing rich information about co-purchase patterns. Cold-start nodes with degree 1 sample that single neighbor plus 5 of its neighbors - far less diverse information. Nodes with degree 0 have no graph structure to leverage at all, relying entirely on their 100-dimensional features, essentially reducing to the MLP baseline.
 
-Furthermore, sampling becomes less representative when few neighbors exist. GraphSAGE's uniform random sampling assumes sufficiently large neighborhoods where sampling approximates the full neighborhood distribution. With only 1-2 neighbors, we're not sampling—we're using all available connections, which may not be informative. If those connections happen to be to nodes in different categories or with weak signal, the cold-start node receives misleading information.
+Furthermore, sampling becomes less representative when few neighbors exist. GraphSAGE's uniform random sampling assumes sufficiently large neighborhoods where sampling approximates the full neighborhood distribution. With only 1-2 neighbors, we're not sampling - we're using all available connections, which may not be informative. If those connections happen to be to nodes in different categories or with weak signal, the cold-start node receives misleading information.
 
 ### Why Does Multi-Hop Sampling Help at All?
 
@@ -204,11 +204,11 @@ Despite the gap, achieving 65-75% accuracy on cold-start nodes (versus 27% witho
 
 The 100-dimensional node features also play a crucial role. These features, derived from product metadata, provide baseline semantic information independent of graph structure. For cold-start nodes, the model learns to rely more heavily on these features while using limited graph information opportunistically when available.
 
-Some cold-start nodes also benefit from connecting to high-degree hubs. If a new product's few early co-purchases happen to be with popular, well-characterized items, the model can make reasonable inferences through those connections. This explains variance in cold-start performance—not all low-degree nodes are equally challenging.
+Some cold-start nodes also benefit from connecting to high-degree hubs. If a new product's few early co-purchases happen to be with popular, well-characterized items, the model can make reasonable inferences through those connections. This explains variance in cold-start performance - not all low-degree nodes are equally challenging.
 
 ### Domain Transfer Insights
 
-Comparing our results to LiGNN's social network setting reveals important domain differences. Product co-purchasing graphs have distinct characteristics: (1) sparser connectivity—products often occupy narrow niches, (2) more homophilous structure—co-purchased items tend to be in similar categories, making direct neighbors highly informative when they exist, and (3) richer individual features—product metadata encodes substantial information compared to typical social network profile features.
+Comparing our results to LiGNN's social network setting reveals important domain differences. Product co-purchasing graphs have distinct characteristics: (1) sparser connectivity - products often occupy narrow niches, (2) more homophilous structure - co-purchased items tend to be in similar categories, making direct neighbors highly informative when they exist, and (3) richer individual features - product metadata encodes substantial information compared to typical social network profile features.
 
 The 14% cold-start gap suggests this problem is more severe in product graphs than social networks. Social networks often have denser connectivity (friend-of-friend relationships create many paths) and more opportunities for graph densification based on homophily. Product graphs lack these properties, making cold-start more challenging.
 
@@ -218,9 +218,9 @@ This finding has practical implications: production systems cannot simply apply 
 
 ## 7. Limitations and Future Work
 
-While this study demonstrates GraphSAGE's capabilities and limitations on cold-start nodes, several constraints should be acknowledged. **First, we explored only one sampling strategy** ([10,5] neighbors)—larger neighborhood sizes or different sampling schemes (e.g., importance-based sampling rather than uniform random) might better compensate for cold-start situations. **Second, our definition of cold-start (degree ≤ 2) is arbitrary**, though motivated by distribution analysis; different thresholds could reveal additional nuances in the relationship between connectivity and performance.
+While this study demonstrates GraphSAGE's capabilities and limitations on cold-start nodes, several constraints should be acknowledged. **First, we explored only one sampling strategy** ([10,5] neighbors) - larger neighborhood sizes or different sampling schemes (e.g., importance-based sampling rather than uniform random) might better compensate for cold-start situations. **Second, our definition of cold-start (degree ≤ 2) is arbitrary**, though motivated by distribution analysis; different thresholds could reveal additional nuances in the relationship between connectivity and performance.
 
-**Third, we did not implement domain-specific adaptations** beyond basic architectural choices. Techniques like feature engineering, hybrid models combining collaborative filtering with GNNs, or meta-learning approaches designed specifically for few-neighbor scenarios could improve cold-start performance. **Fourth, computational constraints limited hyperparameter exploration**—the ogbn-products scale made exhaustive tuning infeasible, and different learning rates, hidden dimensions, or dropout values might narrow the gap.
+**Third, we did not implement domain-specific adaptations** beyond basic architectural choices. Techniques like feature engineering, hybrid models combining collaborative filtering with GNNs, or meta-learning approaches designed specifically for few-neighbor scenarios could improve cold-start performance. **Fourth, computational constraints limited hyperparameter exploration** - the ogbn-products scale made exhaustive tuning infeasible, and different learning rates, hidden dimensions, or dropout values might narrow the gap.
 
 **Note on alternative architectures**: We attempted to train Graph Attention Networks (GAT) and Graph Convolutional Networks (GCN) on the full dataset for comparison. However, both models were stopped after the first epoch exceeded 500 minutes of training time, making them computationally infeasible for this dataset scale. This highlights GraphSAGE's critical advantage: its sampling-based approach enables practical training on million-node graphs, while full-batch methods like GCN and attention-based approaches like GAT face prohibitive computational costs at this scale.
 
@@ -232,7 +232,7 @@ While this study demonstrates GraphSAGE's capabilities and limitations on cold-s
 
 This study successfully adapted LiGNN-inspired methods to the cold-start problem on OGB's ogbn-products dataset, demonstrating both the power and limitations of multi-hop neighborhood sampling for low-degree nodes. GraphSAGE achieved 89% validation accuracy overall, confirming GNNs scale effectively to product recommendation graphs with millions of nodes and tens of millions of edges. However, the 14% performance gap for cold-start nodes (degree ≤ 2) reveals fundamental challenges when graph structure is sparse.
 
-Our reproducible implementation provides the first documented cold-start benchmark on ogbn-products, enabling future research to compare specialized architectures and techniques designed to address this problem. The findings suggest domain-specific solutions are needed—product graphs differ meaningfully from social networks in connectivity patterns and cold-start severity.
+Our reproducible implementation provides the first documented cold-start benchmark on ogbn-products, enabling future research to compare specialized architectures and techniques designed to address this problem. The findings suggest domain-specific solutions are needed - product graphs differ meaningfully from social networks in connectivity patterns and cold-start severity.
 
 ---
 
